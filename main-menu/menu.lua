@@ -10,6 +10,8 @@ local playico = love.graphics.newImage('/main-menu/img/Play.png')
 local loadico = love.graphics.newImage('/main-menu/img/Load.png')
 local settingico = love.graphics.newImage('/main-menu/img/Settings.png')
 local exitico = love.graphics.newImage('/main-menu/img/Exit.png')
+local grid = require('helium.layout.grid')
+local container = require('helium.layout.container')
 
 local bwidth = 350
 local bheight = 80
@@ -38,12 +40,28 @@ local exitProps = {
 	text = 'Exit',
 }
 
+local dummyRectFactory = helium(function(p, view) 
+	return function()
+		love.graphics.setColor(0.1,0.1,0.1)
+		love.graphics.rectangle('fill', 0, 0, view.w, view.h)
+		love.graphics.setColor(0.3,0.3,0.3)
+		love.graphics.rectangle('line', 0, 0, view.w, view.h)
+		love.graphics.setColor(1,1,1)
+		love.graphics.printf(p.text, 0, view.h/2-29, view.w, 'center')
+	end
+end)
+
 return helium(function(param, view)
 	settingProps.onClick = param.switch
 	local playB = buttonFac(playProps, bwidth, bheight)
 	local loadB = buttonFac(loadProps, bwidth, bheight)
 	local settingB = buttonFac(settingProps, bwidth, bheight)
 	local exitB = buttonFac(exitProps, bwidth, bheight)
+
+	local header = dummyRectFactory({text = 'Header'}, 10, 10, {header = true})
+	local sidebar = dummyRectFactory({text = 'Sidebar'}, 10, 10, {sidebar = true})
+	local sidebar2 = dummyRectFactory({text = 'Sidebar2'}, 10, 10, {sidebar2 = true})
+	local content = dummyRectFactory({text = 'Content'}, 10, 10, {content = true})
 
 	local leftOff = view.w - bwidth
 	local topOff = view.h - ((bheight+20)*4)

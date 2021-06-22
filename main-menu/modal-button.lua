@@ -1,6 +1,6 @@
 local helium = require("helium")
 local useButton = require("helium.shell.button")
-local useState = require("helium.control.state")
+local useState = require("helium.hooks.state")
 local flux = require("flux")
 
 local white = {1, 1, 1}

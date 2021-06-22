@@ -1,8 +1,11 @@
-love.window.setMode(1200, 800)
+love.window.setMode(1200, 800, {resizable = true})
+
 local helium = require("helium")
 local flux = require("flux")
+
 local menuScene = helium.scene.new(true)
 local modalScene = helium.scene.new(true)
+
 local modalActive = false
 local moonshine = require("moonshine")
 
@@ -18,7 +21,7 @@ gausBlurs[2].fastgaussianblur.taps = 15
 gausBlurs[3].fastgaussianblur.taps = 21
 gausBlurs[4].fastgaussianblur.taps = 37
 gausBlurs[5].fastgaussianblur.taps = 51
-
+love.keyboard.setKeyRepeat( true )
 local gausWeen = 0
 local accumulator = 0
 
@@ -39,13 +42,18 @@ end
 menuScene:draw()
 
 local modal = require("main-menu.modal")({switch = switchToMenu}, 400, 400)
-local menu = require("main-menu.menu")({switch = switchToModal}, 1200, 800)
+local menu = require("main-menu.menu")({switch = switchToModal}, 200, 200)
 modalScene:activate()
 modal:draw(400, 200)
 menuScene:activate()
-menu:draw(0, 0)
+menu:draw(0, 0, 1200, 800)
 
 local fsc = love.graphics.newCanvas(1200/4, 800/4)
+
+function love.resize(w, h)
+	menu:draw(0, 0, w, h)
+	menuScene:resize(w, h)
+end
 
 function love.draw()
 	if modalActive then
